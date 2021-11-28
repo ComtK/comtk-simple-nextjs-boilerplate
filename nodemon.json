@@ -1,0 +1,6 @@
+{
+	"verbose": true,
+	"ignore": ["yarn", ".next"],
+	"watch": ["server/*"],
+	"ext": "js json"
+}
