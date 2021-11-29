@@ -22,7 +22,7 @@ const Movies = ({ limit }) => {
 				<small>(According to Metacritic)</small>
 			</p>
 			<ul>
-				{movies.map((movie, key) => (
+				{data.map((movie, key) => (
 					<li key={key}>
 						<h2>{movie.title}</h2>
 						<h3>{movie.metacritic}</h3>
