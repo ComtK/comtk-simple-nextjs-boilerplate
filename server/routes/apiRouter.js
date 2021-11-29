@@ -2,7 +2,7 @@ import express from 'express';
 import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
 
-// import userRouter from './userRouter';
+import moviesRouter from './moviesRouter';
 
 const router = express.Router();
 
@@ -12,6 +12,6 @@ router.use(bodyParser.urlencoded({ extended: true }));
 router.use(cookieParser());
 
 // routes
-// router.use('/user', userRouter);
+router.use('/movies', moviesRouter);
 
 export default router;

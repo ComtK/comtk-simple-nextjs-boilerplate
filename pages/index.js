@@ -2,6 +2,7 @@ import Head from 'next/head';
 import { connectToDatabase } from '../lib/mongodb';
 import Image from 'next/image';
 import styles from '../styles/Home.module.css';
+import Link from 'next/link';
 
 export default function Home({ isConnected }) {
 	return (
@@ -24,6 +25,13 @@ export default function Home({ isConnected }) {
 						You are NOT connected to MongoDB. Check the <code>README.md</code> for instructions.
 					</h2>
 				)}
+
+				<Link href="/[limit]" as="/3">
+					<a>limit 3</a>
+				</Link>
+				<Link href="/[limit]" as="/5">
+					<a>limit 5</a>
+				</Link>
 
 				<p className={styles.description}>
 					Get started by editing <code className={styles.code}>pages/index.js</code>
@@ -66,9 +74,6 @@ export default function Home({ isConnected }) {
 
 export const getServerSideProps = async (context) => {
 	const { client } = await connectToDatabase();
-
-	console.log(client.topology.s.state);
-
 	// client.db() will be the default database passed in the MONGODB_URI
 	// You can change the database by calling the client.db() function and specifying a database like:
 	// const db = client.db("myDatabase");

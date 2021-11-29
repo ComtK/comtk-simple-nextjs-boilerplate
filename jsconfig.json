@@ -9,5 +9,6 @@
 			"@/hooks/*": ["hooks/*"],
 			"@/db/*": ["db/*"]
 		}
-	}
+	},
+	"exclude": ["node_modules"]
 }
