@@ -26,6 +26,10 @@ export default function Home({ isConnected }) {
 					</h2>
 				)}
 
+				<Link href="/account/signIn">
+					<a>로그인</a>
+				</Link>
+
 				<Link href="/[limit]" as="/3">
 					<a>limit 3</a>
 				</Link>
