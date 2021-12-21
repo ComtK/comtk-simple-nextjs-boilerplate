@@ -3,7 +3,7 @@ import useReqeust from '@/lib/utils/useRequest';
 
 const Movies = ({ limit }) => {
 	const { data, error } = useReqeust({
-		url: `/api/movies/${limit}`,
+		url: `/dataApi/movies/${limit}`,
 		method: 'GET',
 	});
 

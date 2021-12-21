@@ -8,7 +8,7 @@ const app = next({ dev });
 const handle = app.getRequestHandler();
 app.prepare().then(() => {
 	const server = express();
-	server.use('/api', apiRouter);
+	server.use('/dataApi', apiRouter);
 	server.all('*', (req, res) => {
 		return handle(req, res);
 	});
