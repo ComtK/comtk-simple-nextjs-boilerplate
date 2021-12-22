@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSession, signIn, signOut } from 'next-auth/client';
 
-const SignIn = () => {
+const AccountIndex = () => {
 	const [session, loading] = useSession();
 	if (session) {
 		return (
@@ -19,4 +19,4 @@ const SignIn = () => {
 	);
 };
 
-export default SignIn;
+export default AccountIndex;

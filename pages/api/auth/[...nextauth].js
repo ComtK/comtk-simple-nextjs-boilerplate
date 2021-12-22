@@ -8,7 +8,9 @@ export default NextAuth({
 		// 이메일과 패스워드 입력으로 인증하겠다.
 		Providers.Credentials({
 			// 해당 인증 방식의 이름은 " " 이다.
-			name: 'email-password-credential',
+			id: 'email-password-credential',
+			name: 'Credentials',
+			type: 'credentials',
 			// nextAuth에서 자동으로 Form을 만들어주는데
 			// 해당 Form에 들어갈 내용을 입력한다. (이따가 화면을 보면 이해된다.)
 			credentials: {
@@ -24,6 +26,6 @@ export default NextAuth({
 		}),
 	],
 	pages: {
-		signIn: '/account/test',
+		signIn: '/account/login',
 	},
 });

@@ -26,7 +26,7 @@ export default function Home({ isConnected }) {
 					</h2>
 				)}
 
-				<Link href="/account/signIn">
+				<Link href="/account">
 					<a>로그인</a>
 				</Link>
 
