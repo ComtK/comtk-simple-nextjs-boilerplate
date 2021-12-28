@@ -21,11 +21,34 @@ export default NextAuth({
 			// 해당 부분에서 들어온 데이터를 가지고 인증을 진행하면 된다.
 			// (지금은 무조건 인증되는 방식으로 처리되어있음)
 			async authorize(credentials, req) {
-				return credentials;
+				const email = credentials.email;
+				const password = credentials.password;
+				if (email === 'tester1230@daum.net' && password === '123123') {
+					return credentials;
+				} else {
+					throw new Error('아이디 혹은 패스워드가 틀립니다.');
+				}
 			},
 		}),
 	],
 	pages: {
 		signIn: '/account/login',
+	},
+	//아래 부분 추가.
+	callbacks: {
+		async jwt(token, account) {
+			token.userId = 123;
+			token.test = 'test';
+			console.log('callbacks jwt');
+			console.log(token);
+			return token;
+		},
+		async session(session, userOrToken) {
+			session.user.userId = userOrToken.userId;
+			session.user.test = userOrToken.test;
+			console.log('callbacks session');
+			console.log(session);
+			return session;
+		},
 	},
 });

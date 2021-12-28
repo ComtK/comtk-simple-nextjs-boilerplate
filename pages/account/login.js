@@ -1,7 +1,10 @@
 import React from 'react';
 import { signIn } from 'next-auth/client';
+import { useRouter } from 'next/router';
 
 const Login = () => {
+	const router = useRouter();
+
 	const login = async (e) => {
 		// 원래 실행되는 이벤트 취소
 		e.preventDefault();
@@ -12,8 +15,12 @@ const Login = () => {
 			email,
 			password,
 			redirect: false,
+			callbackUrl: 'http://localhost:3000/user',
 		});
 		console.log(response);
+		console.log(response.url);
+
+		await router.push(response.url);
 	};
 
 	return (
