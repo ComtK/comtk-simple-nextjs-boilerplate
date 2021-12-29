@@ -1,49 +1,78 @@
-import { connectToDatabase } from '../lib/mongodb';
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
+import dbConnect from '@/lib/utils/dbConnect';
+import Pet from 'models/Pet';
 
-export default function Home({ isConnected }) {
+export default function Home({ pets }) {
 	const { data: session } = useSession();
 	return (
-		<div>
-			{isConnected ? (
-				<h2 className="subtitle">You are connected to MongoDB</h2>
-			) : (
-				<h2 className="subtitle">
-					You are NOT connected to MongoDB. Check the <code>README.md</code> for instructions.
-				</h2>
-			)}
+		<>
+			<div>
+				{session ? <h3>{session.user.userId}</h3> : <h3>not session</h3>}
 
-			{session ? <h3>{session.user.userId}</h3> : <h3>not session</h3>}
+				<Link href="/account">
+					<a>로그인</a>
+				</Link>
+				<br />
+				<Link href="/new">
+					<button className="btn view">news</button>
+				</Link>
+			</div>
+			{/* Create a card for each pet */}
+			{pets.map((pet) => (
+				<div key={pet._id}>
+					<div className="card">
+						<img src={pet.image_url} />
+						<h5 className="pet-name">{pet.name}</h5>
+						<div className="main-content">
+							<p className="pet-name">{pet.name}</p>
+							<p className="owner">Owner: {pet.owner_name}</p>
 
-			<Link href="/account">
-				<a>로그인</a>
-			</Link>
-			<br />
+							{/* Extra Pet Info: Likes and Dislikes */}
+							<div className="likes info">
+								<p className="label">Likes</p>
+								<ul>
+									{pet.likes.map((data, index) => (
+										<li key={index}>{data} </li>
+									))}
+								</ul>
+							</div>
+							<div className="dislikes info">
+								<p className="label">Dislikes</p>
+								<ul>
+									{pet.dislikes.map((data, index) => (
+										<li key={index}>{data} </li>
+									))}
+								</ul>
+							</div>
 
-			<Link href="/[limit]" as="/3">
-				<a>limit 3</a>
-			</Link>
-			<br />
-
-			<Link href="/[limit]" as="/5">
-				<a>limit 5</a>
-			</Link>
-		</div>
+							<div className="btn-container">
+								<Link href="/[id]/edit" as={`/${pet._id}/edit`}>
+									<button className="btn edit">Edit</button>
+								</Link>
+								<Link href="/[id]" as={`/${pet._id}`}>
+									<button className="btn view">View</button>
+								</Link>
+							</div>
+						</div>
+					</div>
+				</div>
+			))}
+		</>
 	);
 }
 
 export const getServerSideProps = async (context) => {
-	const { client } = await connectToDatabase();
-	// client.db() will be the default database passed in the MONGODB_URI
-	// You can change the database by calling the client.db() function and specifying a database like:
-	// const db = client.db("myDatabase");
-	// Then you can execute queries against your database like so:
-	// db.find({}) or any of the MongoDB Node Driver commands
+	await dbConnect();
 
-	const isConnected = client.topology.s.state === 'connected';
+	const result = await Pet.find({});
+	const pets = result.map((doc) => {
+		const pet = doc.toObject();
+		pet._id = pet._id.toString();
+		return pet;
+	});
 
 	return {
-		props: { isConnected },
+		props: { pets },
 	};
 };

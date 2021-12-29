@@ -1,7 +1,7 @@
 import express from 'express';
 import cookieParser from 'cookie-parser';
 
-import moviesRouter from './moviesRouter';
+import petRouter from './petRouter';
 
 const router = express.Router();
 
@@ -11,6 +11,6 @@ router.use(express.urlencoded({ extended: true }));
 router.use(cookieParser());
 
 // routes
-router.use('/movies', moviesRouter);
+router.use('/pets', petRouter);
 
 export default router;
