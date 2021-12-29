@@ -1,12 +1,11 @@
 import NextAuth from 'next-auth';
-import Providers from 'next-auth/providers';
-import { NextApiRequest } from 'next';
+import CredentialsProvider from 'next-auth/providers/credentials';
 
 export default NextAuth({
 	// 로그인 인증 방식 설정하기
 	providers: [
 		// 이메일과 패스워드 입력으로 인증하겠다.
-		Providers.Credentials({
+		CredentialsProvider({
 			// 해당 인증 방식의 이름은 " " 이다.
 			id: 'email-password-credential',
 			name: 'Credentials',
@@ -34,18 +33,39 @@ export default NextAuth({
 	pages: {
 		signIn: '/account/login',
 	},
+	secret: 'INp8IvdIyeMcoGAgFGoA61DdBglwwSqnXJZkgz8PSnw',
+	jwt: {
+		// A secret to use for key generation. Defaults to the top-level `secret`.
+		secret: 'INp8IvdIyeMcoGAgFGoA61DdBglwwSqnXJZkgz8PSnw',
+		// The maximum age of the NextAuth.js issued JWT in seconds.
+		// Defaults to `session.maxAge`.
+		maxAge: 61,
+	},
+	session: {
+		// Choose how you want to save the user session.
+		// The default is `"jwt"`, an encrypted JWT (JWE) in the session cookie.
+		// If you use an `adapter` however, we default it to `"database"` instead.
+		// You can still force a JWT session by explicitly defining `"jwt"`.
+		// When using `"database"`, the session cookie will only contain a `sessionToken` value,
+		// which is used to look up the session in the database.
+		strategy: 'jwt',
+
+		// Seconds - How long until an idle session expires and is no longer valid.
+		maxAge: 61, // 30 days
+
+		// Seconds - Throttle how frequently to write to database to extend a session.
+		// Use it to limit write operations. Set to 0 to always update the database.
+		// Note: This option is ignored if using JSON Web Tokens
+		updateAge: 24 * 60 * 60, // 24 hours
+	},
 	//아래 부분 추가.
 	callbacks: {
-		async jwt(token, account) {
-			token.userId = 123;
-			token.test = 'test';
+		async jwt({ token, account }) {
 			console.log('callbacks jwt');
 			console.log(token);
 			return token;
 		},
-		async session(session, userOrToken) {
-			session.user.userId = userOrToken.userId;
-			session.user.test = userOrToken.test;
+		async session({ session, token, user }) {
 			console.log('callbacks session');
 			console.log(session);
 			return session;

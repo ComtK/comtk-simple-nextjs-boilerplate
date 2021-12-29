@@ -1,9 +1,10 @@
 import React from 'react';
-import { useSession, signIn, signOut } from 'next-auth/client';
+import { useSession } from 'next-auth/react';
 
 const user = () => {
-	const { session } = useSession();
-	return <div>user page / {session}</div>;
+	const { data: session } = useSession();
+	console.log(session);
+	return <div>{session?.user.email} page</div>;
 };
 
 export default user;

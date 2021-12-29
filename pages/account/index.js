@@ -1,8 +1,8 @@
 import React from 'react';
-import { useSession, signIn, signOut } from 'next-auth/client';
+import { useSession, signIn, signOut } from 'next-auth/react';
 
 const AccountIndex = () => {
-	const [session, loading] = useSession();
+	const { data: session } = useSession();
 	if (session) {
 		return (
 			<>
